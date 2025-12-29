@@ -45,7 +45,7 @@ def upload_to_cos(content):
     response = client.put_object(
         Bucket=bucket,
         Body=content.encode('utf-8'),
-        Key='rss_mirror.txt',
+        Key='RSS/rss_mirror.txt',
         StorageClass='STANDARD',
         ContentType='text/plain; charset=utf-8'
     )
