@@ -1,0 +1,30 @@
+name: Sync RSS to Tencent COS
+
+on:
+  schedule:
+    - cron: '15 * * * *' # 每小时第15分钟运行一次
+  workflow_dispatch: # 允许手动点击运行
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests cos-python-sdk-v5
+
+      - name: Run Script
+        env:
+          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+          COS_BUCKET: ${{ secrets.COS_BUCKET }}
+          COS_REGION: ${{ secrets.COS_REGION }}
+        run: python main.py
