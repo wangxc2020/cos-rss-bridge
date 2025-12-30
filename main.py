@@ -10,27 +10,31 @@ from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
 # === ⚙️ 配置区域 ===
-MAX_ITEMS = 5  # 每个源最多抓取最新的 N 条
+MAX_ITEMS = 3  # 每个源最多抓取最新的 N 条
 
 # === 🔗 优质源列表 ===
 RSS_URLS = [
+    # --- 顶尖视野 (Gods & Insights) ---
+    {"name": "Andrej Karpathy", "url": "https://karpathy.bearblog.dev/feed/"},
+    {"name": "Paul Graham", "url": "http://www.aaronsw.com/2002/feeds/pgessays.rss"},
+    {"name": "Lilian Weng", "url": "https://lilianweng.github.io/index.xml"},
+    
+    # --- 视频精选 (YouTube) ---
+    {"name": "AI Explained", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCNJ1Ymd5yFuUPtn21xtRbbw"},
+    {"name": "Two Minute Papers", "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbfYPyITQ-7l4upoX8nvctg"},
+
     # --- 核心巨头 ---
     {"name": "OpenAI", "url": "https://openai.com/news/rss.xml"},
     {"name": "DeepMind", "url": "https://deepmind.google/blog/rss.xml"},
-    {"name": "HuggingFace", "url": "https://huggingface.co/blog/feed.xml"},
-    
-    # --- 借道源 (解决反爬/无RSS问题) ---
     {"name": "Anthropic(TC)", "url": "https://techcrunch.com/tag/anthropic/feed/"},
-    {"name": "Meta AI(Eng)", "url": "https://engineering.fb.com/category/ai/feed/"},
     
-    # --- 社区与产品 ---
-    {"name": "ProductHunt", "url": "https://www.producthunt.com/feed?category=artificial-intelligence"},
-    {"name": "GitHub Py", "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/python.xml"},
-    {"name": "TheVerge", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"},
-    
-    # --- 国内源 ---
+    # --- 国内重磅 ---
+    {"name": "Jiqizhixin", "url": "https://www.jiqizhixin.com/rss"},
     {"name": "QbitAI", "url": "https://www.qbitai.com/feed"},
-    {"name": "PyTorch", "url": "https://pytorch.org/blog/feed.xml"},
+    
+    # --- 社区与产品 (精简) ---
+    {"name": "HuggingFace", "url": "https://huggingface.co/blog/feed.xml"},
+    {"name": "TheVerge", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"},
 ]
 
 # === 🛠️ 工具函数 ===
