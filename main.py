@@ -3,7 +3,7 @@ import requests
 import time
 import json
 import re
-import xml.etree.ElementTree as ET
+import feedparser
 from datetime import datetime, timezone, timedelta
 import email.utils
 from qcloud_cos import CosConfig
@@ -42,9 +42,15 @@ def clean_html(raw_html):
     text = re.sub(cleanr, '', raw_html)
     return text.replace('\n', ' ').strip()[:300] # 截断一下，省Token
 
-def parse_date(date_str):
+def parse_date(date_obj_or_str):
     """万能日期清洗：统一返回 YYYY-MM-DD HH:MM"""
-    if not date_str: return "N/A"
+    if not date_obj_or_str: return "N/A"
+    
+    # 如果已经是 struct_time (feedparser 解析结果)
+    if isinstance(date_obj_or_str, time.struct_time):
+        return time.strftime('%Y-%m-%d %H:%M', date_obj_or_str)
+
+    date_str = str(date_obj_or_str)
     dt = None
     try:
         # 1. 尝试 RFC 822 (RSS)
@@ -65,49 +71,45 @@ def parse_date(date_str):
         return dt.strftime('%Y-%m-%d %H:%M')
     return date_str  # 解析失败返回原样
 
-def extract_metadata(xml_text, source_name):
-    """解析单条 XML，返回结构化数据 list 和 最新时间"""
+def extract_metadata(xml_content, source_name):
+    """解析 RSS/Atom 内容 (使用 feedparser)"""
     try:
-        root = ET.fromstring(xml_text)
-        items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry') or root.findall('.//entry')
+        # feedparser 最好直接处理 bytes，以便它自己处理编码
+        feed = feedparser.parse(xml_content)
         
         parsed_items = []
         dates = []
         
-        for item in items[:MAX_ITEMS]:
+        for item in feed.entries[:MAX_ITEMS]:
             # 1. 提取 Title
-            title_node = item.find('title')
-            if title_node is None: title_node = item.find('{http://www.w3.org/2005/Atom}title')
-            title = title_node.text.strip() if title_node is not None and title_node.text else "No Title"
+            title = item.get('title', 'No Title')
 
             # 2. 提取 Link
-            link = "N/A"
-            link_node = item.find('link')
-            if link_node is not None:
-                link = link_node.text or link_node.attrib.get('href')
-            else:
-                link_node = item.find('{http://www.w3.org/2005/Atom}link')
-                if link_node is not None:
-                    link = link_node.attrib.get('href')
+            link = item.get('link', 'N/A')
 
             # 3. 提取 Date
-            raw_date = None
-            for tag in ['pubDate', 'published', 'updated', 'dc:date']:
-                node = item.find(tag) or item.find(f"{{http://www.w3.org/2005/Atom}}{tag}")
-                if node is not None and node.text:
-                    raw_date = node.text
-                    break
+            # feedparser 通常会提供 parsed 后的 struct_time
+            raw_date = item.get('published_parsed') or item.get('updated_parsed')
             
+            # 如果解析失败，尝试获取原始字符串
+            if not raw_date:
+                raw_date = item.get('published') or item.get('updated') or item.get('date')
+
             clean_date = parse_date(raw_date)
             if clean_date != "N/A": dates.append(clean_date)
 
             # 4. 提取 Description
-            desc = ""
-            for tag in ['description', 'summary', 'content']:
-                node = item.find(tag) or item.find(f"{{http://www.w3.org/2005/Atom}}{tag}")
-                if node is not None and node.text:
-                    desc = node.text
-                    break
+            # 优先找 summary / description
+            desc = item.get('summary') or item.get('description') or ""
+            
+            # 如果没有，尝试找 content (通常是 list)
+            if not desc and 'content' in item:
+                # content 是一个 list，里面可能有 html 或 text
+                for c in item.content:
+                    if c.get('value'):
+                        desc = c.get('value')
+                        break
+            
             clean_desc = clean_html(desc)
 
             # 5. 存入结果
@@ -152,7 +154,8 @@ def run_etl_pipeline():
             resp = requests.get(url, headers=headers, timeout=30)
             if resp.status_code == 200:
                 # 解析数据
-                items, latest_date = extract_metadata(resp.text, name)
+                # 传入 resp.content (bytes) 给 feedparser
+                items, latest_date = extract_metadata(resp.content, name)
                 count = len(items)
                 
                 if count > 0:

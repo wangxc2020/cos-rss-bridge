@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install requests cos-python-sdk-v5
+          pip install requests cos-python-sdk-v5 feedparser
 
       - name: Run Script
         env:

@@ -1,0 +1,317 @@
+[
+  {
+    "source": "OpenAI",
+    "title": "One in a million: celebrating the customers shaping AI’s future",
+    "url": "https://openai.com/index/one-in-a-million-customers",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "OpenAI",
+    "title": "Continuously hardening ChatGPT Atlas against prompt injection",
+    "url": "https://openai.com/index/hardening-atlas-against-prompt-injection",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "OpenAI",
+    "title": "Evaluating chain-of-thought monitorability",
+    "url": "https://openai.com/index/evaluating-chain-of-thought-monitorability",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "OpenAI",
+    "title": "Deepening our collaboration with the U.S. Department of Energy",
+    "url": "https://openai.com/index/us-department-of-energy-collaboration",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "OpenAI",
+    "title": "AI literacy resources for teens and parents",
+    "url": "https://openai.com/index/ai-literacy-resources-for-teens-and-parents",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "DeepMind",
+    "title": "Google's year in review: 8 areas with research breakthroughs in 2025",
+    "url": "https://deepmind.google/blog/googles-year-in-review-8-areas-with-research-breakthroughs-in-2025/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "DeepMind",
+    "title": "Gemini 3 Flash: frontier intelligence built for speed",
+    "url": "https://deepmind.google/blog/gemini-3-flash-frontier-intelligence-built-for-speed/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "DeepMind",
+    "title": "Gemma Scope 2: helping the AI safety community deepen understanding of complex language model behavior",
+    "url": "https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "DeepMind",
+    "title": "Improved Gemini audio models for powerful voice experiences",
+    "url": "https://deepmind.google/blog/improved-gemini-audio-models-for-powerful-voice-experiences/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "DeepMind",
+    "title": "Deepening our partnership with the UK AI Security Institute",
+    "url": "https://deepmind.google/blog/deepening-our-partnership-with-the-uk-ai-security-institute/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "HuggingFace",
+    "title": "AprielGuard: A Guardrail for Safety and Adversarial Robustness in Modern LLM Systems",
+    "url": "https://huggingface.co/blog/ServiceNow-AI/aprielguard",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "HuggingFace",
+    "title": "Tokenization in Transformers v5: Simpler, Clearer, and More Modular",
+    "url": "https://huggingface.co/blog/tokenizers",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "HuggingFace",
+    "title": "The Open Evaluation Standard: Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator",
+    "url": "https://huggingface.co/blog/nvidia/nemotron-3-nano-evaluation-recipe",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "HuggingFace",
+    "title": "CUGA on Hugging Face: Democratizing Configurable AI Agents",
+    "url": "https://huggingface.co/blog/ibm-research/cuga-on-hugging-face",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "HuggingFace",
+    "title": "New in llama.cpp: Model Management",
+    "url": "https://huggingface.co/blog/ggml-org/model-management-in-llamacpp",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "Anthropic(TC)",
+    "title": "John Carreyrou and other authors bring new lawsuit against six major AI companies",
+    "url": "https://techcrunch.com/2025/12/23/john-carreyrou-and-other-authors-bring-new-lawsuit-against-six-major-ai-companies/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "Anthropic(TC)",
+    "title": "OpenAI is reportedly trying to raise $100B at an $830B valuation",
+    "url": "https://techcrunch.com/2025/12/19/openai-is-reportedly-trying-to-raise-100b-at-an-830b-valuation/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "Anthropic(TC)",
+    "title": "Adobe hit with proposed class-action, accused of misusing authors’ work in AI training",
+    "url": "https://techcrunch.com/2025/12/17/adobe-hit-with-proposed-class-action-accused-of-misusing-authors-work-in-ai-training/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "Anthropic(TC)",
+    "title": "OpenAI, Anthropic, and Block join new Linux Foundation effort to standardize the AI agent era",
+    "url": "https://techcrunch.com/2025/12/09/openai-anthropic-and-block-join-new-linux-foundation-effort-to-standardize-the-ai-agent-era/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "Anthropic(TC)",
+    "title": "India proposes charging OpenAI, Google for training AI on copyrighted content",
+    "url": "https://techcrunch.com/2025/12/09/india-proposes-charging-openai-google-for-training-ai-on-copyrighted-content/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "ProductHunt",
+    "title": "Giselle",
+    "url": "https://www.producthunt.com/products/giselle",
+    "date": "2025-02-27 20:02",
+    "desc": "Build and run AI workflows. Open source.                                   Discussion             |             Link"
+  },
+  {
+    "source": "ProductHunt",
+    "title": "BizCard",
+    "url": "https://www.producthunt.com/products/bizcard-3",
+    "date": "2025-12-26 20:45",
+    "desc": "Kill LinkedIn QR contacts. Make real connections instead.                                   Discussion             |             Link"
+  },
+  {
+    "source": "ProductHunt",
+    "title": "NotebookLM Tools Chrome Extension",
+    "url": "https://www.producthunt.com/products/notebooklm-tools-chrome-extension",
+    "date": "2025-12-28 19:24",
+    "desc": "Chrome extension for NotebookLM productivity utilities                                   Discussion             |             Link"
+  },
+  {
+    "source": "ProductHunt",
+    "title": "Molmo 2",
+    "url": "https://www.producthunt.com/products/allen-institute-of-artificial-intelligence",
+    "date": "2025-12-28 20:00",
+    "desc": "SOTA video understanding, pointing, and tracking VLM                                   Discussion             |             Link"
+  },
+  {
+    "source": "ProductHunt",
+    "title": "Dropstone",
+    "url": "https://www.producthunt.com/products/dropstone-2",
+    "date": "2025-12-26 16:58",
+    "desc": "The Recursive Swarm IDE. 10,000 Agents in one tab                                   Discussion             |             Link"
+  },
+  {
+    "source": "GitHub Py",
+    "title": "Zie619/n8n-workflows",
+    "url": "https://github.com/Zie619/n8n-workflows",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "GitHub Py",
+    "title": "Shubhamsaboo/awesome-llm-apps",
+    "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "GitHub Py",
+    "title": "SkyworkAI/SkyReels-V2",
+    "url": "https://github.com/SkyworkAI/SkyReels-V2",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "GitHub Py",
+    "title": "alexta69/metube",
+    "url": "https://github.com/alexta69/metube",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "GitHub Py",
+    "title": "wshobson/agents",
+    "url": "https://github.com/wshobson/agents",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "TheVerge",
+    "title": "Sam Altman is hiring someone to worry about the dangers of AI",
+    "url": "https://www.theverge.com/news/850537/sam-altman-openai-head-of-preparedness",
+    "date": "2025-12-27 14:00",
+    "desc": "OpenAI is hiring a Head of Preparedness. Or, in other words, someone whose primary job is to think about all the ways AI could go horribly, horribly wrong. In a post on X, Sam Altman announced the position by acknowledging that the rapid improvement of AI models poses \"some real challenges.\" The pos"
+  },
+  {
+    "source": "TheVerge",
+    "title": "Trump’s war on offshore wind faces another lawsuit",
+    "url": "https://www.theverge.com/news/850461/offshore-wind-trump-lawsuit-dominion-energy-ai-data-center",
+    "date": "2025-12-26 17:14",
+    "desc": "Dominion Energy, an offshore wind developer and utility serving Virginia's \"data center alley,\" filed suit against the Trump administration this week over its decision to pause federal leases for large offshore wind projects. The move puts a sudden stop to five wind farms already under construction,"
+  },
+  {
+    "source": "TheVerge",
+    "title": "I re-created Google&#8217;s cute Gemini ad with my own kid&#8217;s stuffie, and I wish I hadn&#8217;t",
+    "url": "https://www.theverge.com/tech/849998/gemini-ai-stuffed-animal-commercial",
+    "date": "2025-12-25 09:00",
+    "desc": "When your kid starts showing a preference for one of their stuffed animals, you're supposed to buy a backup in case it goes missing. I've heard this advice again and again, but never got around to buying a second plush deer once \"Buddy\" became my son's obvious favorite. Neither, apparently, did the "
+  },
+  {
+    "source": "TheVerge",
+    "title": "Hollywood cozied up to AI in 2025 and had nothing good to show for it",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/848119/hollywood-film-tv-ai-2025",
+    "date": "2025-12-25 08:00",
+    "desc": "AI isn't new to Hollywood - but this was the year when it really made its presence felt. For years now, the entertainment industry has used different kinds of generative AI products for a variety of post-production processes ranging from de-aging actors to removing green screen backgrounds. In many "
+  },
+  {
+    "source": "TheVerge",
+    "title": "In 2025, AI became a lightning rod for gamers and developers",
+    "url": "https://www.theverge.com/entertainment/848368/gen-ai-video-games-2025",
+    "date": "2025-12-24 08:00",
+    "desc": "2025 was the year generative AI made its presence felt in the video game industry. Its use has been discovered in some of the most popular games of the year, and CEOs from some of the largest game studios claim it's being implemented everywhere in the industry including in their own development proc"
+  },
+  {
+    "source": "QbitAI",
+    "title": "Manus卖给了Meta！年初火爆年底数十亿美元被收购",
+    "url": "https://www.qbitai.com/2025/12/366226.html",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "QbitAI",
+    "title": "特斯拉上海急招Robotaxi人才",
+    "url": "https://www.qbitai.com/2025/12/366215.html",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "QbitAI",
+    "title": "国资战略入股九章云极 加码先进AI基础设施攻坚",
+    "url": "https://www.qbitai.com/2025/12/366209.html",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "QbitAI",
+    "title": "389万寻找翁荔继任者！OpenAI紧急开招安全防范负责人",
+    "url": "https://www.qbitai.com/2025/12/366199.html",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "QbitAI",
+    "title": "良心老黄不搞硅谷资本家那套！Groq人均套现500万美元",
+    "url": "https://www.qbitai.com/2025/12/366192.html",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "PyTorch",
+    "title": "Deploying Smarter: Hardware-Software Co-design in PyTorch",
+    "url": "https://pytorch.org/blog/deploying-smarter-hardware-software-co-design/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "PyTorch",
+    "title": "Enabling Cluster Launch Control with TLX",
+    "url": "https://pytorch.org/blog/enabling-cluster-launch-control-with-tlx/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "PyTorch",
+    "title": "Hybrid Models Meet SGLang: More than Full Attention",
+    "url": "https://pytorch.org/blog/hybrid-models-meet-sglang-more-than-full-attention/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "PyTorch",
+    "title": "Efficient MoE Pre-training at Scale on 1K AMD GPUs with TorchTitan",
+    "url": "https://pytorch.org/blog/efficient-moe-pre-training-at-scale-with-torchtitan/",
+    "date": "N/A",
+    "desc": ""
+  },
+  {
+    "source": "PyTorch",
+    "title": "The Future of Inference: PyTorch ATX Event",
+    "url": "https://pytorch.org/blog/the-future-of-inference-pytorch-atx-event/",
+    "date": "N/A",
+    "desc": ""
+  }
+]
