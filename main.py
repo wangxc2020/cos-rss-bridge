@@ -6,125 +6,155 @@ from datetime import datetime
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
-# === ✅ 2025年12月 终极修正版 URL 列表 ===
+# === 配置: 每个源只保留最新的 N 条 ===
+MAX_ITEMS_PER_SOURCE = 5
+
+# === ✅ 修复后的源列表 ===
 RSS_URLS = [
-    # --- 1. 极其稳定的官方源 ---
-    "https://openai.com/news/rss.xml",                # OpenAI (稳)
-    "https://deepmind.google/blog/rss.xml",           # DeepMind (稳)
-    "https://huggingface.co/blog/feed.xml",           # HuggingFace (稳)
-    "https://www.producthunt.com/feed?category=artificial-intelligence", # Product Hunt (稳)
-    "https://mshibanami.github.io/GitHubTrendingRSS/daily/python.xml",   # GitHub热榜 (稳)
+    # 1. 行业基石
+    "https://openai.com/news/rss.xml",
+    "https://deepmind.google/blog/rss.xml",
+    "https://huggingface.co/blog/feed.xml",
     
-    # --- 2. 修正后的源 ---
+    # 2. 之前报错的源已修复
+    # Meta Engineering (原路径404，改用主订阅源，包含AI内容)
+    "https://engineering.fb.com/feed/", 
     
-    # PyTorch: 修正 URL 路径
+    # PyTorch (官方源)
     "https://pytorch.org/blog/feed.xml",
     
-    # Meta AI: 官网反爬太严(400)，改用 Meta 工程博客 AI 分类 (WordPress架构，非常稳)
-    "https://engineering.fb.com/category/ai/feed/",
-    
-    # Stability AI: 修正参数
+    # Stability AI (尝试修复 XML 解析问题)
     "https://stability.ai/news?format=rss",
-
-    # --- 3. "借刀杀人"源 (专门解决无RSS/停更问题) ---
     
-    # Anthropic: 官网无RSS，社区源停更。改用 TechCrunch 的 Anthropic 专属标签
-    # 只要 Anthropic 发新闻，TechCrunch 肯定第一时间报。
+    # 3. 稳定源
+    "https://www.producthunt.com/feed?category=artificial-intelligence",
+    "https://mshibanami.github.io/GitHubTrendingRSS/daily/python.xml",
+    
+    # 4. 替代源
+    # TechCrunch - Anthropic 标签
     "https://techcrunch.com/tag/anthropic/feed/",
-    
-    # 补充: The Verge AI (替代反爬严重的 Ben Evans)
+    # The Verge - AI 标签
     "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-    
-    # --- 4. 国内源 (作为数据保底) ---
+    # 国内保底
     "https://www.qbitai.com/feed"
 ]
 
-# === XML 解析与清洗工具 ===
-def analyze_xml(xml_text):
+# === 核心：XML 瘦身函数 ===
+def truncate_xml_content(xml_text, limit=MAX_ITEMS_PER_SOURCE):
+    """
+    解析 XML，强制只保留前 N 个 item/entry，然后重新生成字符串。
+    极大幅度减少文件体积。
+    """
     try:
-        # 预处理：有些源 xml 声明编码可能有误，强行忽略错误解码
+        # 注册命名空间防止 tag 变成 ns0:item
+        ET.register_namespace('', "http://www.w3.org/2005/Atom")
+        
+        # 这种方式是为了容错，有些 XML 声明可能有问题
         root = ET.fromstring(xml_text)
-        items = root.findall('.//item')
-        if not items: items = root.findall('.//{http://www.w3.org/2005/Atom}entry')
-        if not items: items = root.findall('.//entry')
+        
+        # 1. 处理 RSS 2.0 (<channel> -> <item>)
+        channel = root.find('channel')
+        if channel is not None:
+            items = channel.findall('item')
+            # 如果数量超过限制，移除多余的
+            if len(items) > limit:
+                for item in items[limit:]:
+                    channel.remove(item)
+        
+        # 2. 处理 Atom (<feed> -> <entry>)
+        else:
+            # Atom 根节点通常就是 feed
+            entries = root.findall('{http://www.w3.org/2005/Atom}entry')
+            if not entries:
+                 entries = root.findall('entry') # 尝试无 namespace
             
+            if len(entries) > limit:
+                for entry in entries[limit:]:
+                    root.remove(entry)
+                    
+        # 重新转回字符串
+        return ET.tostring(root, encoding='unicode')
+        
+    except Exception as e:
+        # 如果解析失败（太乱的格式），为了兜底，还是返回原文，但做字符串强行截断
+        # 避免几 MB 的文件传上去
+        return xml_text[:10000] 
+
+# === 元数据分析工具 (用于报告) ===
+def analyze_xml_simple(xml_text):
+    try:
+        root = ET.fromstring(xml_text)
+        items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry') or root.findall('.//entry')
+        
         count = len(items)
         latest_date = "N/A"
-        
-        # 找最新日期 (前3条)
-        for item in items[:3]:
-            # 优先找 pubDate (RSS)
-            node = item.find('pubDate')
-            # 其次找 published (Atom)
-            if node is None: node = item.find('{http://www.w3.org/2005/Atom}published')
-            # 再次找 updated
-            if node is None: node = item.find('{http://www.w3.org/2005/Atom}updated')
-            # 再次找 dc:date
-            if node is None: node = item.find('{http://purl.org/dc/elements/1.1/}date')
-            
-            if node is not None and node.text:
-                # 截断日期字符串，太长了没法看
-                latest_date = node.text[:25]
-                break
-                
+        if items:
+            item = items[0]
+            for tag in ['pubDate', 'published', 'updated', 'dc:date']:
+                node = item.find(tag)
+                if node is None: node = item.find(f"{{http://www.w3.org/2005/Atom}}{tag}")
+                if node is not None and node.text:
+                    latest_date = node.text[:25]
+                    break
         return count, latest_date
-    except Exception:
-        return 0, "Parse Error"
+    except:
+        return 0, "Parse Err"
 
 def fetch_and_report():
     combined_data = ""
     report_lines = []
     
-    print(f"{'RSS 源 (Short URL)':<40} | {'St':<2} | {'Num':<3} | {'Latest Date'}")
-    print("-" * 85)
+    print(f"{'RSS 源 (Short URL)':<40} | {'Status':<6} | {'Raw Num':<7} | {'Action'}")
+    print("-" * 90)
     
     report_lines.append(f"更新时间: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    report_lines.append(f"策略: 每个源仅保留最新的 {MAX_ITEMS_PER_SOURCE} 条")
     report_lines.append("-" * 60)
     
-    # 伪装头
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Referer': 'https://google.com'
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
     }
 
     for url in RSS_URLS:
         status_icon = "🔴"
-        count = 0
-        latest = "---"
-        # 简化 URL 显示
-        short_url = url.replace("https://", "").replace("www.", "").replace("techcrunch.com/tag/", "TC/").replace("feed/", "")[:38]
+        raw_count = 0
+        action_msg = "Fail"
+        short_url = url.replace("https://", "").replace("www.", "")[:38]
 
         try:
             resp = requests.get(url, headers=headers, timeout=25)
             
-            # 兼容：有些服务器返回 403 但其实给了内容（罕见），主要看 200
-            if resp.status_code == 200 and len(resp.text) > 500:
+            if resp.status_code == 200 and len(resp.text) > 100:
                 status_icon = "✅"
-                count, latest = analyze_xml(resp.text)
                 
-                # 只有解析出条目的才算真正成功
-                if count > 0:
+                # 1. 瘦身处理
+                lean_xml = truncate_xml_content(resp.text, limit=MAX_ITEMS_PER_SOURCE)
+                
+                # 2. 统计原始数量 vs 瘦身数量
+                raw_count, _ = analyze_xml_simple(resp.text)
+                final_count, latest_date = analyze_xml_simple(lean_xml)
+                
+                action_msg = f"Cut {raw_count}->{final_count}"
+                
+                # 3. 只有真正有内容才加入 Combined
+                if final_count > 0:
                     combined_data += f"\n\n<<<<SOURCE_START:{url}>>>>\n"
-                    combined_data += resp.text
+                    combined_data += lean_xml
                     combined_data += f"\n<<<<SOURCE_END>>>>\n"
-                else:
-                    status_icon = "⚠️"
-                    latest = "Xml Empty"
             else:
                 status_icon = "❌"
-                latest = f"HTTP {resp.status_code}"
+                action_msg = f"HTTP {resp.status_code}"
 
         except Exception as e:
             status_icon = "❌"
-            latest = "Err"
+            action_msg = "Err"
 
-        print(f"{short_url:<40} | {status_icon} | {count:<3} | {latest}")
-        
+        print(f"{short_url:<40} | {status_icon} | {raw_count:<7} | {action_msg}")
         report_lines.append(f"{status_icon} {short_url}")
-        report_lines.append(f"   Items: {count} | Last: {latest}")
+        report_lines.append(f"   Items: {raw_count} -> {MAX_ITEMS_PER_SOURCE} | Last: {action_msg}")
         
-        time.sleep(2)
+        time.sleep(1)
 
     return combined_data, "\n".join(report_lines)
 
@@ -149,8 +179,8 @@ def upload_to_cos(filename, content):
 
 if __name__ == "__main__":
     full_data, report_text = fetch_and_report()
-    if len(full_data) > 500:
-        upload_to_cos('RSS/rss_mirror.txt', full_data)
-        upload_to_cos('RSS/rss_report.txt', report_text)
+    if len(full_data) > 200:
+        upload_to_cos('rss_mirror.txt', full_data)
+        upload_to_cos('rss_report.txt', report_text)
     else:
-        print("⚠️ 数据量严重不足，跳过上传。")
+        print("⚠️ 数据量过少，跳过上传。")
