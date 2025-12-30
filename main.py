@@ -180,7 +180,7 @@ def upload_to_cos(filename, content):
 if __name__ == "__main__":
     full_data, report_text = fetch_and_report()
     if len(full_data) > 200:
-        upload_to_cos('rss_mirror.txt', full_data)
-        upload_to_cos('rss_report.txt', report_text)
+        upload_to_cos('RSS/rss_mirror.txt', full_data)
+        upload_to_cos('RSS/rss_report.txt', report_text)
     else:
         print("⚠️ 数据量过少，跳过上传。")
